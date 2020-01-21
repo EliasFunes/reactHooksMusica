@@ -10,15 +10,33 @@ const App = () => {
     const [letra, agregarLetra] = useState([]);
     const [info, agregarInfo] = useState({});
 
+
     const consultarApiLetra = async busqueda => {
+        const {artista, cancion} = busqueda;
+
+        const urlLetra = `https://api.lyrics.ovh/v1/${artista}/${cancion}`;
+        const urlInfo = `https://theaudiodb.com/api/v1/json/1/search.php?s=${artista}`;
+
+        const [respuestaLetra, respuestaInfo] = await Promise.all([
+            axios(urlLetra),
+            axios(url)
+        ]);
+
+        agregarArtista(artista);
+        agregarLetra(respuestaLetra.data.lyrics);   
+        agregarInfo(respuestaInfo.data.artists[0]);
+    }
+
+
+   /*const consultarApiLetra = async busqueda => {
         const {artista, cancion} = busqueda;
         const url = `https://api.lyrics.ovh/v1/${artista}/${cancion}`;
         const resultado = await axios(url);
         agregarArtista(artista);
         agregarLetra(resultado.data.lyrics);
-    }
+    }*/
 
-    const consultarApiInfo = async () => {
+    /*const consultarApiInfo = async () => {
         if(artista) {
             const url = `https://theaudiodb.com/api/v1/json/1/search.php?s=${artista}`;
             const resultado = await axios(url);
@@ -28,7 +46,7 @@ const App = () => {
 
     useEffect(() => {
         consultarApiInfo();
-    }, [artista])
+    }, [artista])*/
 
     return (
         <Fragment>
